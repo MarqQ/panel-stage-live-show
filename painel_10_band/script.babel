@@ -1,0 +1,117 @@
+const canvas = document.querySelector("canvas");
+const ctx = canvas.getContext("2d");
+const colors = [
+  "#ffffff",
+  "#000000",
+  // "#b4b2b5", // cinza
+  // "#dfd73f", // amarelo
+  // "#6ed2dc", //azul
+  // "#66cf5d", //verde
+  "#c542cb", //roxo
+  // "#d0535e", //vermelho
+  "#3733c9", //azul
+];
+// var svg = document.querySelector("svg");
+// var xml = new XMLSerializer().serializeToString(svg);
+// var svg64 = btoa(xml);
+// var b64Start = 'data:image/svg+xml;base64,';
+// var image64 = b64Start + svg64;
+let linePos = 0,
+  rAF;
+
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+
+function texts(color) {
+  ctx.font = "20vh Bungee Outline";
+  ctx.shadowBlur = 30;
+  ctx.shadowColor = color;
+  ctx.fillStyle = color;
+  // posiciona a coordenada do titulo NOBRES
+  ctx.setTransform(1, -0.15, 0, 1, 0, -10);
+  ctx.fillText("Nobres", innerWidth / 2, innerHeight / 2 - 5);
+
+  ctx.fillStyle = "white";
+  ctx.shadowBlur = 30;
+  ctx.shadowColor = color;
+  ctx.fillText("Nobres", innerWidth / 2, innerHeight / 2);
+
+  ctx.font = "18vh Bungee Inline";
+  ctx.shadowBlur = 30;
+  ctx.shadowColor = color;
+  ctx.fillStyle = "#fff";
+  // posiciona a coordenada do titulo MORTAIS
+  ctx.setTransform(1, -0.15, 0, 1.03, 0, -5);
+  ctx.fillText("Mortais", innerWidth / 2, innerHeight / 2 + innerHeight / 10);
+
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+}
+
+function glitch() {
+  rAF = window.requestAnimationFrame(glitch);
+
+  // define a cor do background do canvas. Se não houver fillStyle, o glitch colorido assume
+  var background = new Image();
+  // background.src = "https://wallpaperset.com/w/full/3/2/0/541110.jpg";
+  // background.src = "https://wallpaperset.com/w/full/9/0/9/292157.jpg";
+  // background.src = "https://e0.pxfuel.com/wallpapers/942/228/desktop-wallpaper-costume-suit-dogs-gentleman-canine-top-hat-the-gentlemen.jpg";
+  // background.src = "img/fundo.png";
+  background.src = "img/old_street.jpg";
+  // background.src = "img/skull.png";
+  // background.src = "img/logo.png";
+  // background.src = "img/tophat.jpg";
+  // background.src = "img/gentleman_3.png";
+  background.onload = function(){
+    ctx.drawImage(background,0,0); 
+  }
+  // cores para o background
+  // ctx.fillStyle = "#1a191c";
+  // ctx.fillStyle = "#960f1f";
+  ctx.fillRect(0, 0, innerWidth, innerHeight);
+
+  texts(colors[Math.floor(Math.random() * 7)]);
+  ctx.shadowBlur = 0;
+  ctx.shadowColor = "none";
+  // transforma a barra e solidez das cores em diferentes coordenadas
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+  for (let i = 0; i < 1000; i++) {
+    // define cor a intensidade de glitch primário na tela sendo 0.00 o menor
+    ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.01})`;
+    ctx.fillRect(
+      Math.floor(Math.random() * innerWidth),
+      Math.floor(Math.random() * innerHeight),
+      Math.floor(Math.random() * 30) + 1,
+      Math.floor(Math.random() * 30) + 1
+    );
+
+    // define cor a intensidade de glitch secundário na tela sendo 0.00 o menor
+    ctx.fillStyle = `rgba(0,0,0,${Math.random() * 0.1})`;
+    ctx.fillRect(
+      Math.floor(Math.random() * innerWidth),
+      Math.floor(Math.random() * innerHeight),
+      Math.floor(Math.random() * 25) + 1,
+      Math.floor(Math.random() * 25) + 1
+    );
+  }
+  
+  ctx.fillStyle = colors[Math.floor(Math.random() * 40)];
+  ctx.fillRect(
+    Math.random() * innerWidth,
+    Math.random() * innerHeight,
+    Math.random() * innerWidth,
+    Math.random() * innerHeight
+  );
+  // coordenada do glitch da barra inferior
+  ctx.setTransform(1, 0, 0, .8, 1, 0);
+
+  
+}
+
+glitch();
+
+window.addEventListener('resize', () => {
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+});
